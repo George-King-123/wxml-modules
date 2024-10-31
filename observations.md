@@ -1,5 +1,5 @@
 Observations with $q = 2$, and a nilpotency degree of $q + 2 = 4$ 
-| Length | Sequences that satisfy all constraints |
+| Length | $\#$ of Sequences that satisfy all constraints |
 -- | --- 
 | 4 | 5 |
 | 5 | 9 |
