@@ -86,32 +86,3 @@ if __name__ == "__main__":
   # make markdown table 
   for l in range(num_tuples_per_window, len(sb.successful_sequences)):
     print(f"| {l} | {len(sb.successful_sequences[l])} |")
-'''
-q = 2, num_tuples_per_window = 4 we can do max_build_length = 25, get the following data:
-There are 5 good seqs of length 4
-There are 9 good seqs of length 5
-There are 17 good seqs of length 6
-There are 31 good seqs of length 7
-There are 52 good seqs of length 8
-There are 92 good seqs of length 9
-There are 160 good seqs of length 10
-There are 282 good seqs of length 11
-There are 466 good seqs of length 12
-There are 770 good seqs of length 13
-There are 1297 good seqs of length 14
-There are 2202 good seqs of length 15
-There are 3724 good seqs of length 16
-There are 6335 good seqs of length 17
-There are 10770 good seqs of length 18
-There are 18297 good seqs of length 19
-There are 31028 good seqs of length 20
-There are 52648 good seqs of length 21
-There are 89324 good seqs of length 22
-There are 151477 good seqs of length 23
-There are 256868 good seqs of length 24
-There are 435710 good seqs of length 25
-
-It looks roughly O(2^n)
-any bigger max_build_length is too slow
-
-'''
