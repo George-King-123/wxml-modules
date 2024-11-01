@@ -27,3 +27,5 @@ Observations with $q = 2$, and a nilpotency degree of $q + 2 = 4$
 Looks roughly $\mathcal{O}(2^n)$. To show no sequence with bounded nilpotency degree exists, we would need either this number to go to $0$ or more constraints (e.g. actually figuring out which points lie on all hypersurfaces)
 
 As a check that the code is reasonable, $q = 2$ and nilpotency degree $3$ gives no good sequences of length $\geq 9$
+
+Note: As the sequence grows longer more of the constraints make sense, but also there are more options. 
