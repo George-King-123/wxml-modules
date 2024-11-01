@@ -4,7 +4,7 @@ from projective_utils import get_p1
 
 # we know that a_1, ..., a_{q+1} is a good set for m = 1
 def test_simplest_good_set(q):
-  pts = [(pt,) for pt in get_p1()]
+  pts = [(pt,) for pt in get_p1(q)]
   
   print_test(f"test_simplest_good_set({q})", is_good_collection(pts=pts, m=1, q=q))
 
@@ -16,7 +16,7 @@ def test_simplest_bad_set(q):
 
 def test_quadratic_good_set(q):
   fixed_pt = (0, 1)
-  pts = [(p, fixed_pt) for p in get_p1()]
+  pts = [(p, fixed_pt) for p in get_p1(q)]
 
   print_test(f"test_quadratic_good_set({q})", is_good_collection(pts=pts, m=2, q=q))
 
