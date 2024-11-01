@@ -1,4 +1,4 @@
-from check_good_set import CollectionChecker
+from CollectionChecker import CollectionChecker
 from projective_utils import get_p1
 from math import comb
 import itertools
@@ -11,14 +11,15 @@ def investigate_collections(q, m, size):
   good_collections = set()
   bad_collections = set()
   for c in all_collections:
-
+    
+    num_good = 0
+    num_bad = 0
     if checker.is_good_collection(c):
-      good_collections.add(c)
-      print_collection(c)
+      num_good += 1
     else:
-      bad_collections.add(c)
+      num_bad += 1
   
-  print(f"good = {len(good_collections)}, bad = {len(bad_collections)}")
+  print(f"good = {num_good}, bad = {num_bad}")
 
 def print_collection(c):
   def format_tuple(tuple):
@@ -65,4 +66,9 @@ if __name__ == "__main__":
   #     investigate_collections(q=q, m=m, size=q+1)
   #     print()
 
-  investigate_collections(q=3, m=3, size=3+1)
+  for q in {2, 3, 5}:
+    for m in {2, 3}:
+      for size in {q + 2, q + 3}:
+        print(f"q = {q}, m = {m}, size = {size}  ")
+        investigate_collections(q=q, m=m, size=size)
+        print()

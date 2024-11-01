@@ -3,13 +3,12 @@
 
 class CollectionChecker:
 
-  def __init__(self, m, q, tuples=None, hyper_surfaces=None):
+  def __init__(self, m, q):
     self.m = m
     self.q = q
 
-    self.monomial_indices = CollectionChecker.generate_tuples(0, 1, m) if tuples is None else tuples
-    self.hyper_surfaces = (CollectionChecker.get_all_hypersurfaces(q=q, m=m) 
-      if hyper_surfaces is None else hyper_surfaces)
+    self.monomial_indices = CollectionChecker.generate_tuples(0, 1, m) 
+    self.hyper_surfaces = CollectionChecker.get_all_hypersurfaces(q=q, m=m) 
 
   # each point in pts is a point in (P^1)^m
   def is_good_collection(self, pts):
