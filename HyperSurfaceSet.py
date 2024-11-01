@@ -1,14 +1,14 @@
-# throughout q is the size of the field
+from projective_utils import generate_tuples
 
-
-class CollectionChecker:
+# represents the set of all hypersurfaces of degree m in P1(q)
+class HyperSurfaceSet:
 
   def __init__(self, m, q):
     self.m = m
     self.q = q
 
-    self.monomial_indices = CollectionChecker.generate_tuples(0, 1, m) 
-    self.hyper_surfaces = CollectionChecker.get_all_hypersurfaces(q=q, m=m) 
+    self.monomial_indices = generate_tuples(0, 1, m) 
+    self.hyper_surfaces = HyperSurfaceSet.get_all_hypersurfaces(q=q, m=m) 
 
   # each point in pts is a point in (P^1)^m
   def is_good_collection(self, pts):
@@ -33,25 +33,4 @@ class CollectionChecker:
   # with entries in F_q
   @staticmethod
   def get_all_hypersurfaces(m, q):
-    return CollectionChecker.generate_tuples(0, q-1, 2 ** m)
-
-  # return a list of tuples (a_1, ... a_m) st
-  # a_i \in \{i, i + 1, ..., j - 1, j\}
-  # of course requires i <= j, m >= 0
-  @staticmethod
-  def generate_tuples(i, j, m):
-    all_tuples = set()
-
-    def generate_recur(cur):
-      if len(cur) == m:
-        all_tuples.add(tuple(cur))
-        return 
-
-      for a_i in range(i, j + 1):
-        cur.append(a_i)
-        generate_recur(cur)
-        cur.pop()
-    
-    generate_recur([])
-
-    return all_tuples 
+    return generate_tuples(0, q-1, 2 ** m)

@@ -1,4 +1,4 @@
-from CollectionChecker import CollectionChecker
+from HyperSurfaceSet import HyperSurfaceSet
 from projective_utils import get_p1
 from math import comb
 import itertools
@@ -6,7 +6,7 @@ import itertools
 def investigate_collections(q, m, size):
   all_collections = generate_collections(q, m, size)
 
-  checker = CollectionChecker(q=q, m=m)
+  checker = HyperSurfaceSet(q=q, m=m)
 
   good_collections = set()
   bad_collections = set()
