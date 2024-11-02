@@ -2,6 +2,7 @@ from HyperSurfaceSet import HyperSurfaceSet
 from projective_utils import get_p1
 from math import comb
 import itertools
+import string
 
 def investigate_collections(q, m, size):
   all_collections = generate_collections(q, m, size)
@@ -11,18 +12,23 @@ def investigate_collections(q, m, size):
   num_good = 0
   for c in all_collections:    
     if checker.is_good_collection(c):
+      print_collection(c, q)
       num_good += 1
     
-  print(f"good = {num_good}, bad = {len(all_collections) - num_good}")
+  print(f"good = ${num_good}$, bad = ${len(all_collections) - num_good}$")
 
   # mostly for testing
   return num_good
 
-def print_collection(c):
-  def format_tuple(tuple):
-    return '[' + ", ".join(str(t) for t in tuple) + ']'
+# prints the collection, associating each element of P1 with a letter
+# and printing the M-tuples as words in this alphabet
+def print_collection(c, q):
+  letter_map = {pt: letter for pt, letter in zip(get_p1(q), string.ascii_uppercase)}
 
-  print('{' + "; ".join((format_tuple(m_tuple) for m_tuple in c)) + '}')
+  def translate_tuple(tuple):
+    return "".join(letter_map[t] for t in tuple)
+
+  print('{' + ", ".join((translate_tuple(m_tuple) for m_tuple in c)) + '}\\')
 
 # generate the set of all collections C
 # where |C| = q + 1, each element of C is a tuple of length m, 
@@ -57,11 +63,9 @@ def generate_all_length_m_tuples(q, m):
   return all_tuples 
 
 if __name__ == "__main__":
-  investigate_collections(q=3, m=3, size=4)
-
-  # for q in {2, 3, 5}:
-  #   for m in {2, 3}:
-  #     for size in {q + 2, q + 3}:
-  #       print(f"q = {q}, m = {m}, size = {size}  ")
-  #       investigate_collections(q=q, m=m, size=size)
-  #       print()
+  for q in {2, 3}:
+    for m in {2}:
+      for size in {q + 2, q + 3}:
+        print(f"$q = {q}, m = {m}, size = {size}$  ")
+        investigate_collections(q=q, m=m, size=size)
+        print()

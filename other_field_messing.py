@@ -1,9 +1,19 @@
 
-import numpy as np
 import galois
-# Initialize GF(2) and a random matrix to serve as an example
-M,N = 7, 4
-GF2 = galois.GF(3)
-x = GF2(1)
-y = GF2(1)
-print(x + y)
+import time 
+
+t_start = time.time()
+GF2 = galois.GF(2)
+t_end = time.time() 
+
+print(t_end - t_start)
+
+t_start = time.time()
+x = 1
+y = 1
+z = 1
+for _ in range(10000):
+  z = x + y
+  z %= 2
+t_end = time.time() 
+print(t_end - t_start)
