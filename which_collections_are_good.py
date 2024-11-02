@@ -5,21 +5,18 @@ import itertools
 
 def investigate_collections(q, m, size):
   all_collections = generate_collections(q, m, size)
-
   checker = HyperSurfaceSet(q=q, m=m)
 
-  good_collections = set()
-  bad_collections = set()
-  for c in all_collections:
-    
-    num_good = 0
-    num_bad = 0
+  # clumsy, but comprehensions would use more memory here
+  num_good = 0
+  for c in all_collections:    
     if checker.is_good_collection(c):
       num_good += 1
-    else:
-      num_bad += 1
-  
-  print(f"good = {num_good}, bad = {num_bad}")
+    
+  print(f"good = {num_good}, bad = {len(all_collections) - num_good}")
+
+  # mostly for testing
+  return num_good
 
 def print_collection(c):
   def format_tuple(tuple):
@@ -60,15 +57,15 @@ def generate_all_length_m_tuples(q, m):
   return all_tuples 
 
 if __name__ == "__main__":
-  # for q in {2, 3, 5}:
-  #   for m in {1, 2, 3}:
-  #     print(f"q = {q}, m = {m}")
-  #     investigate_collections(q=q, m=m, size=q+1)
-  #     print()
-
   for q in {2, 3, 5}:
-    for m in {2, 3}:
-      for size in {q + 2, q + 3}:
-        print(f"q = {q}, m = {m}, size = {size}  ")
-        investigate_collections(q=q, m=m, size=size)
-        print()
+    for m in {1, 2, 3}:
+      print(f"q = {q}, m = {m}")
+      investigate_collections(q=q, m=m, size=q+1)
+      print()
+
+  # for q in {2, 3, 5}:
+  #   for m in {2, 3}:
+  #     for size in {q + 2, q + 3}:
+  #       print(f"q = {q}, m = {m}, size = {size}  ")
+  #       investigate_collections(q=q, m=m, size=size)
+  #       print()

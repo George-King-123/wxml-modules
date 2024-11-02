@@ -8,7 +8,7 @@ class HyperSurfaceSet:
     self.q = q
 
     self.monomial_indices = generate_tuples(0, 1, m) 
-    self.hyper_surfaces = HyperSurfaceSet.get_all_hypersurfaces(q=q, m=m) 
+    self.hyper_surfaces = HyperSurfaceSet.get_all_hypersurfaces(q=q, m=m)
 
   # each point in pts is a point in (P^1)^m
   def is_good_collection(self, pts):
