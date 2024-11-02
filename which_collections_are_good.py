@@ -16,10 +16,11 @@ def investigate_collections(q, m, size):
   num_good = 0
   for c in all_collections:    
     if checker.is_good_collection(c):
-      if not contains_good_sub_collection_of_size(c, q + 1):
-        print(f"The following good collection of size {size} does not contain a good subcollection of size q + 1 = {q + 1}")
-        print_collection(c, q)
-        print()
+      # if not contains_good_sub_collection_of_size(c, q + 1):
+      #   print(f"The following good collection of size {size} does not contain a good subcollection of size q + 1 = {q + 1}")
+      #   print_collection(c, q)
+      #   print()
+      print_collection(c, q)
       num_good += 1
     
   print(f"good = ${num_good}$, bad = ${len(all_collections) - num_good}$")
@@ -70,9 +71,21 @@ def generate_all_length_m_tuples(q, m):
   return all_tuples 
 
 if __name__ == "__main__":
-  for q in {2, 3}:
-    for m in {2}:
-      for size in {q + 2, q + 3}:
-        print(f"$q = {q}, m = {m}, size = {size}$  ")
-        investigate_collections(q=q, m=m, size=size)
-        print()
+  # for q in {2, 3}:
+  #   for m in {2}:
+  #     for size in {q + 2, q + 3}:
+  #       print(f"$q = {q}, m = {m}, size = {size}$  ")
+  #       investigate_collections(q=q, m=m, size=size)
+  #       print()
+
+  # q = 3
+  # m = 2
+  # size = q + 4
+  # print(f"$q = {q}, m = {m}, size = {size}$  ")
+  # investigate_collections(q=q, m=m, size=size)
+  # print()
+
+  for q, m in [(2, 2), (2, 3), (2, 4), (3, 2), (3, 3)]:
+    print(f"$q = {q}, m = {m}, size = {q+1}$  ")
+    investigate_collections(q=q, m=m, size=q+1)
+    print()
