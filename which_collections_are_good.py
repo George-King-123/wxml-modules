@@ -57,11 +57,7 @@ def generate_all_length_m_tuples(q, m):
   return all_tuples 
 
 if __name__ == "__main__":
-  for q in {2, 3, 5}:
-    for m in {1, 2, 3}:
-      print(f"q = {q}, m = {m}")
-      investigate_collections(q=q, m=m, size=q+1)
-      print()
+  investigate_collections(q=3, m=3, size=4)
 
   # for q in {2, 3, 5}:
   #   for m in {2, 3}:
