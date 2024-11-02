@@ -8,11 +8,18 @@ def investigate_collections(q, m, size):
   all_collections = generate_collections(q, m, size)
   checker = HyperSurfaceSet(q=q, m=m)
 
+  def contains_good_sub_collection_of_size(collection, subsize):
+    return any(checker.is_good_collection(c) for c 
+               in itertools.combinations(collection, subsize))
+    
   # clumsy, but comprehensions would use more memory here
   num_good = 0
   for c in all_collections:    
     if checker.is_good_collection(c):
-      print_collection(c, q)
+      if not contains_good_sub_collection_of_size(c, q + 1):
+        print(f"The following good collection of size {size} does not contain a good subcollection of size q + 1 = {q + 1}")
+        print_collection(c, q)
+        print()
       num_good += 1
     
   print(f"good = ${num_good}$, bad = ${len(all_collections) - num_good}$")
