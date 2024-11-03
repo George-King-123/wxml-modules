@@ -1,6 +1,7 @@
-from HyperSurfaceSet import HyperSurfaceSet
+from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
 from projective_utils import get_p1
 import string
+import timeit
 
 class SequenceBuilder:
   # q = size of the base field
@@ -30,7 +31,7 @@ class SequenceBuilder:
       length_m_tuples.add(tuple(seq[-m:]))
 
       if m not in self.surface_sets:
-        self.surface_sets[m] = HyperSurfaceSet(m=m, q=q)
+        self.surface_sets[m] = CachedHyperSurfaceSet(m=m, q=q)
 
       if not self.surface_sets[m].is_good_collection(length_m_tuples):
         return False
@@ -67,16 +68,16 @@ class SequenceBuilder:
 if __name__ == "__main__":
   # size of the finite field. Remember the projective space has 
   # size q + 1
-  q = 3
+  q = 2
 
   # this is the degree of nilpotency for each element as well
   num_tuples_per_window = q + 3
 
-  max_build_length = 16
+  max_build_length = 40
 
   sb = SequenceBuilder(q=q, n=num_tuples_per_window, max_build_length=max_build_length)
 
-  sb.build_sequences()
+  # sb.build_sequences()
 
   def print_all(l):
     num_successful = len(sb.successful_sequences[l])
@@ -86,7 +87,17 @@ if __name__ == "__main__":
       sb.print_seq(seq)
     print()
 
-  for l in range(num_tuples_per_window, len(sb.successful_sequences)):
-    num_successful = len(sb.successful_sequences[l])
-    print(f"There are {num_successful} successful seqs of length {l}, given below\\")
-    # print_all(l)
+  def print_lengths():
+    for l in range(len(sb.successful_sequences)):
+      num_successful = len(sb.successful_sequences[l])
+      print(f"There are {num_successful} successful seqs of length {l}, given below\\")
+      # print_all(l)
+  
+  def timed():
+    start = timeit.default_timer()
+    sb.build_sequences()
+    end = timeit.default_timer()
+    print (f"Time taken, in seconds: {end - start}")
+
+  timed()
+  print_lengths()

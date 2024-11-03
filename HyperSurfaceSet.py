@@ -1,4 +1,5 @@
 from projective_utils import generate_tuples
+from functools import lru_cache
 
 # represents the set of all hypersurfaces of degree m in P1(q)
 class HyperSurfaceSet:
@@ -73,6 +74,12 @@ class HyperSurfaceSet:
   @staticmethod 
   def mul_tuple(scalar, t, q):
     return tuple([(scalar * ti) % q for ti in t])
+  
+class CachedHyperSurfaceSet(HyperSurfaceSet):
+  def is_good_collection(self, pts):
+    # sets aren't hashable, so we tuple them
+    return self.is_good_collection_cached(tuple(pts))
 
-
-HyperSurfaceSet.get_all_hypersurfaces(2, 2)
+  @lru_cache(maxsize=None)
+  def is_good_collection_cached(self, pts):
+    return super().is_good_collection(pts)
