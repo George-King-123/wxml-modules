@@ -20,7 +20,7 @@ def investigate_collections(q, m, size):
       #   print(f"The following good collection of size {size} does not contain a good subcollection of size q + 1 = {q + 1}")
       #   print_collection(c, q)
       #   print()
-      print_collection(c, q)
+      # print_collection(c, q)
       num_good += 1
     
   print(f"good = ${num_good}$, bad = ${len(all_collections) - num_good}$")
@@ -39,7 +39,7 @@ def print_collection(c, q):
   print('{' + ", ".join((translate_tuple(m_tuple) for m_tuple in c)) + '}\\')
 
 # generate the set of all collections C
-# where |C| = q + 1, each element of C is a tuple of length m, 
+# where |C| = size, each element of C is a tuple of length m, 
 # and each element of that tuple is a point in p1
 def generate_collections(q, m, size):
   all_tuples = generate_all_length_m_tuples(q, m)
@@ -48,6 +48,20 @@ def generate_collections(q, m, size):
   assert len(all_collections) == comb((q + 1) ** m, size)
   return all_collections
 
+def letters_to_collection(word_set, q, m):
+  letter_map = {letter:pt for pt, letter in zip(get_p1(q), string.ascii_uppercase)}
+  collection = set() 
+
+  for word in word_set:
+    assert len(word) == m
+    m_tuple = tuple([letter_map[letter] for letter in word])
+    collection.add(m_tuple)
+
+  return collection
+
+def is_collection_good(word_set, q, m):
+  checker = HyperSurfaceSet(m=m, q=q)
+  return checker.is_good_collection(letters_to_collection(word_set=word_set, q=q, m=m))
 
 # generate all unique tuples of length m with entries in p1, 
 # taking F_q to be the base field
@@ -71,21 +85,5 @@ def generate_all_length_m_tuples(q, m):
   return all_tuples 
 
 if __name__ == "__main__":
-  # for q in {2, 3}:
-  #   for m in {2}:
-  #     for size in {q + 2, q + 3}:
-  #       print(f"$q = {q}, m = {m}, size = {size}$  ")
-  #       investigate_collections(q=q, m=m, size=size)
-  #       print()
-
-  # q = 3
-  # m = 2
-  # size = q + 4
-  # print(f"$q = {q}, m = {m}, size = {size}$  ")
-  # investigate_collections(q=q, m=m, size=size)
-  # print()
-
-  for q, m in [(2, 2), (2, 3), (2, 4), (3, 2), (3, 3)]:
-    print(f"$q = {q}, m = {m}, size = {q+1}$  ")
-    investigate_collections(q=q, m=m, size=q+1)
-    print()
+  will_collection = {'AA', 'AB', 'AC', 'BA', 'BB', 'BC', 'CA', 'CB', 'CC', 'CD'}
+  print(is_collection_good(will_collection, q=3, m=2))

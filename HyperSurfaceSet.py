@@ -26,7 +26,6 @@ class HyperSurfaceSet:
     if pt not in self.pt_cache:
       self.cache_pt(pt)
 
-    
     length = 2 ** self.m
     assert len(self.pt_cache[pt]) == length 
     assert len(surface) == length 

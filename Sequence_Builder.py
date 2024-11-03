@@ -1,70 +1,68 @@
-GLOBAL_LOG_FLAG = False
-def log(log_str):
-  if GLOBAL_LOG_FLAG:
-    print(log_str)
-
+from HyperSurfaceSet import HyperSurfaceSet
+from projective_utils import get_p1
+import string
 
 class SequenceBuilder:
-  def __init__(self, q, num_tuples_per_window, max_build_length):
+  # q = size of the base field
+  # n = the nilpotentcy degree for all elements, also the number of tuples per window
+  def __init__(self, q, n, max_build_length):
     self.q = q
-    self.num_tuples_per_window = num_tuples_per_window
+    self.n = n
     self.max_build_length = max_build_length
+    self.p1 = get_p1(q)
 
     # successful_sequences[i] = a set of sequences of length i that meet the constraints 
     self.successful_sequences = [set() for _ in range(max_build_length + 1)]
 
+    # map from m to the set of all hypersurfaces of degree m
+    self.surface_sets = {}
+
   def satisfies_contraints(self, seq):
-    '''
-    for each degree m, there must be q + 1 distinct m-tuples in every 
-    window of num_tuples_per_window many m-tuples. We check the window ending at the last element, 
-    since all previous windows will have been checked before. We check for every m that stays in bounds.
-    '''
-
-    log(f"Seeing if sequence {seq} satisfies constraints with window_size = " + 
-      f"{num_tuples_per_window} and q = {q}")
-
     # degree we are considering,aka size of the tuple 
     m = 1
-    while m * self.num_tuples_per_window <= len(seq):
+    while m * self.n <= len(seq):
       # check that the window ending here works for degree m
 
       # creates all tuples except for the last one, python quirk
-      length_m_tuples = {seq[-m*(j+1) : -m*j] for j in range (1, self.num_tuples_per_window)}
+      length_m_tuples = {tuple(seq[-m*(j+1) : -m*j]) for j in range (1, self.n)}
 
       # add the last one 
-      length_m_tuples.add(seq[-m:])
+      length_m_tuples.add(tuple(seq[-m:]))
 
-      if len(length_m_tuples) < self.q + 1:
-        log(f"failed to satisfy constraints at m = {m}")
+      if m not in self.surface_sets:
+        self.surface_sets[m] = HyperSurfaceSet(m=m, q=q)
+
+      if not self.surface_sets[m].is_good_collection(length_m_tuples):
         return False
-
-
-      # log(f"There {len(length_m_tuples)} many length-m tuples in the past " + 
-      #   f"window-size many {m}-tuples, they are {length_m_tuples}")
 
       m += 1
 
     return True
 
   def build_sequences(self):
-    # start the sequence as 12...q(q+1)
-    intial_sequence = "".join(str(j) for j in range(1, q+1))
-
-    self.build_sequence_recur(intial_sequence)
+    self.build_sequence_recur([])
 
   def build_sequence_recur(self, cur_sequence):
     if not self.satisfies_contraints(cur_sequence):
       return
     
-    self.successful_sequences[len(cur_sequence)].add(cur_sequence)
+    self.successful_sequences[len(cur_sequence)].add(tuple(cur_sequence))
 
     if len(cur_sequence) == self.max_build_length:
       return
 
     # try adding everything from 1 up to q+1 (inclusive) to the sequence
-    for next_elt in range(1, q + 2):
-      next_seq = cur_sequence + str(next_elt)
-      self.build_sequence_recur(next_seq)
+    for next_elt in self.p1:
+      cur_sequence.append(next_elt)
+      self.build_sequence_recur(cur_sequence)
+      cur_sequence.pop()
+
+  def print_seq(self, seq):
+    letter_map = {pt:letter for pt, letter in zip(self.p1, string.ascii_uppercase)}
+
+    letter_seq = "".join(letter_map[pt] for pt in seq) + "\\"
+
+    print(letter_seq)
 
 if __name__ == "__main__":
   # size of the finite field. Remember the projective space has 
@@ -74,15 +72,21 @@ if __name__ == "__main__":
   # this is the degree of nilpotency for each element as well
   num_tuples_per_window = q + 2
 
-  max_build_length = 25
+  max_build_length = 20
 
-  sb = SequenceBuilder(q, num_tuples_per_window, max_build_length)
+  sb = SequenceBuilder(q=q, n=num_tuples_per_window, max_build_length=max_build_length)
 
   sb.build_sequences()
-  
-  # for l in range(num_tuples_per_window, len(sb.successful_sequences)):
-  #   print(f"There are {len(sb.successful_sequences[l])} good seqs of length {l}")
 
-  # make markdown table 
-  for l in range(num_tuples_per_window, len(sb.successful_sequences)):
-    print(f"| {l} | {len(sb.successful_sequences[l])} |")
+
+  # for l in range(num_tuples_per_window, len(sb.successful_sequences)):
+  #   num_successful = len(sb.successful_sequences[l])
+  #   print(f"There are {num_successful} successful seqs of length {l}, given below\\")
+  #   for seq in sb.successful_sequences[l]:
+  #     sb.print_seq(seq)
+  #   print()
+  #   if num_successful == 0:
+  #     break
+
+  # good_vals = [i for i in range(0, len(sb.successful_sequences)) if len(sb.successful_sequences[i]) > 0]
+  # print(sb.successful_sequences[good_vals[-1]])
