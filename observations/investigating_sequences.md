@@ -1,12 +1,11 @@
 Set $q=2$, $n = q + 2 = 4$. We try to build sequences that will satisfy all the constraints. There are $36$ length $8$ sequences that work. These satisfy the constraints for $m = 1$ at the first five offsets, and the constraints for $m = 2$ at the starting offset (the only one which makes sense). It is impossible to extend any of these to work, they won't work with $m = 2$ at the second offset.
 
-[Sequences](##one)
-
 Now examine $q = 2, n = q + 3 = 5$. There are $102$ sequences of length $15$ that work. These satisfy the constraints for $m = 1$ at the first $11$ offsets, the constraints for $m = 2$ at the first $6$ offsets, and the constraints for $m = 3$ at the first offset (the only one which makes sense). It is impossible to extend any of these to work, they won't work with $m = 2$ at the second offset.
 
-[Sequences](##two)
+Now examine $q = 3, n = q + 2 = 5$. There are $528$ sequences of length $14$ that work. These satisfy the constraints for $m = 1$ at the first $11$ offsets, the constraints for $m = 2$ at the first $6$ offsets, and the constraints for $m = 3$ at the first offset (the only one which makes sense). It is impossible to extend any of these to work, they won't work with $m = 2$ at the second offset.
 
-## $q = 2, n = 4$ <a name="one"></a>
+This pattern of the first offset working for a new value of $m$ doesn't always hold. With $q=3, n = q + 2$ the first offset breaks for $m = 2$. In other words, there are lots of sequences of length $9$ that work, none of length $10$. 
+### $q = 2, n = 4$ <a name="one"></a>
 AACBACAB\
 BBACCBAB\
 ACABCBAA\
@@ -44,7 +43,7 @@ BACABCAA\
 ABCBACBB\
 BBCACBAB\
 
-## $q = 2, n = 5$ <a name="two"></a>
+### $q = 2, n = 5$ <a name="two"></a>
 
 ABAACABCBAAACBA\
 ACABCCACBCCABCA\
