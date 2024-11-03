@@ -3,7 +3,10 @@ Set $q=2$, $n = q + 2 = 4$. We try to build sequences that will satisfy all the 
 Now examine $q = 2, n = q + 3 = 5$. There are $102$ sequences of length $15$ that work. These satisfy the constraints for $m = 1$ at the first $11$ offsets, the constraints for $m = 2$ at the first $6$ offsets, and the constraints for $m = 3$ at the first offset (the only one which makes sense). It is impossible to extend any of these to work, they won't work with $m = 2$ at the second offset.
 
 
-This pattern of the first offset working for a new value of $m$ doesn't always hold. With $q=3, n = q + 2$ the first offset breaks for $m = 2$. In other words, there are lots of sequences of length $9$ that work, none of length $10$. Additionally, for $q=5, n = q + 2 = 7$, the first offset breaks for $m = 2$, i.e. there are lots of sequences of length $13$ that work ($1170720$ of them), but none of length $14$.
+This pattern of the first offset working for a new value of $m$ doesn't always hold: 
+- With $q=3, n = q + 2 = 5$ the first offset breaks for $m = 2$. In other words, there are lots of sequences of length $9$ that work, none of length $10$. 
+- For $q=3, n = q + 3 = 6$, there are good sequences of length $14$ but not $15$ (very bad for the pattern)
+- For $q=5, n = q + 2 = 7$, the first offset breaks for $m = 2$, i.e. there are lots of sequences of length $13$ that work ($1170720$ of them), but none of length $14$.
 
 
 

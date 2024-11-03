@@ -67,10 +67,10 @@ class SequenceBuilder:
 if __name__ == "__main__":
   # size of the finite field. Remember the projective space has 
   # size q + 1
-  q = 2
+  q = 3
 
   # this is the degree of nilpotency for each element as well
-  num_tuples_per_window = q + 4
+  num_tuples_per_window = q + 3
 
   max_build_length = 16
 
