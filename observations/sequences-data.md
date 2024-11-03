@@ -1,7 +1,7 @@
 Dump of the last sequences that work for the specified values
 
 ### $ q = 2, n = 4$ , length $8$ 
-These are the last that work, i.e. no length $9$ sequences satisfy the required constraints 
+These are the last that work, i.e. no length $9$ sequences satisfy the required constraints  
 AACBACAB\
 BBACCBAB\
 ACABCBAA\
@@ -40,7 +40,7 @@ ABCBACBB\
 BBCACBAB
 
 ### $q = 2, n = 5$, length 15
-These are the last that work, i.e. no length $16$ sequences satisfy the required constraints
+These are the last that work, i.e. no length $16$ sequences satisfy the required constraints  
 ABAACABCBAAACBA\
 ACABCCACBCCABCA\
 ACBACBAABCCAABB\
