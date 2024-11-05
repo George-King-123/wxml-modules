@@ -2,7 +2,7 @@ from HyperSurfaceSet import HyperSurfaceSet
 from which_collections_are_good import generate_all_length_m_tuples
 import itertools 
 
-def f(m, q):
+def find_intersection_sizes(m, q, intersection_size):
   h = HyperSurfaceSet(m=m, q=q)
   all_tuples = generate_all_length_m_tuples(m=m, q=q)
 
@@ -15,7 +15,7 @@ def f(m, q):
                                   all(h.point_on_surface(p, s) for s in g)])
     freq_count[num_pts_in_intersection] = freq_count.get(num_pts_in_intersection, 0) + 1
 
-  print(freq_count)
+  print(sorted([(num, freq_count[num]) for num in freq_count], key = lambda x:x[0]))
 
 if __name__ == "__main__":
-  f(2, 2)
+  find_intersection_sizes(3, 2, 2)
