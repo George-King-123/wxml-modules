@@ -24,11 +24,9 @@ def apply_perm(perm, m_tuple, q):
   p1_to_int = {p:a for p, a in zip(get_p1(q), range(q+1))}
   int_to_p1 = {a:p for a, p in zip(range(q+1), get_p1(q))}
 
-  permuted_m_tuple = tuple([
+  return tuple([
     int_to_p1[perm[p1_to_int[t_i]]] for t_i in m_tuple
   ])
-
-  return permuted_m_tuple
 
 def permute_collection(perm, collection, q):
   return [apply_perm(perm, elt, q) for elt in collection]
@@ -42,9 +40,8 @@ def check(m , q, size):
 
   s_q_plus_1 = make_s_d(q+1)
   
-  return all(all(checker.is_good_collection(permute_collection(perm, c, q)) 
-                 for perm in s_q_plus_1) 
-            for c in good_collections)
+  return all(checker.is_good_collection(permute_collection(perm, c, q)) 
+                 for perm in s_q_plus_1 for c in good_collections)
 
 if __name__ == "__main__":
-  print(check(q = 2, m = 3, size = 4))
+  print(check(q = 2, m = 3, size = 5))
