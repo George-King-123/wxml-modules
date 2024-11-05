@@ -50,14 +50,7 @@ def generate_collections(q, m, size):
 
 def letters_to_collection(word_set, q, m):
   letter_map = {letter:pt for pt, letter in zip(get_p1(q), string.ascii_uppercase)}
-  collection = set() 
-
-  for word in word_set:
-    assert len(word) == m
-    m_tuple = tuple([letter_map[letter] for letter in word])
-    collection.add(m_tuple)
-
-  return collection
+  return {tuple([letter_map[letter] for letter in word]) for word in word_set}
 
 def is_collection_good(word_set, q, m):
   checker = HyperSurfaceSet(m=m, q=q)
