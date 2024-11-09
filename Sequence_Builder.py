@@ -71,33 +71,16 @@ if __name__ == "__main__":
   q = 3
 
   # this is the degree of nilpotency for each element as well
-  num_tuples_per_window = q + 2
+  n = q + 2
 
   max_build_length = 40
 
-  sb = SequenceBuilder(q=q, n=num_tuples_per_window, max_build_length=max_build_length)
-
-  # sb.build_sequences()
-
-  def print_all(l):
-    num_successful = len(sb.successful_sequences[l])
-
-    print(f"There are {num_successful} successful seqs of length {l}, given below\\")
-    for seq in sb.successful_sequences[l]:
-      sb.print_seq(seq)
-    print()
+  sb = SequenceBuilder(q=q, n=n, max_build_length=max_build_length)
 
   def print_lengths():
     for l in range(len(sb.successful_sequences)):
       num_successful = len(sb.successful_sequences[l])
-      print(f"There are {num_successful} successful seqs of length {l}, given below\\")
-      # print_all(l)
+      print(f"There are {num_successful} successful seqs of length {l}\\")
   
-  def timed():
-    start = timeit.default_timer()
-    sb.build_sequences()
-    end = timeit.default_timer()
-    print (f"Time taken, in seconds: {end - start}")
-
-  timed()
+  sb.build_sequences()
   print_lengths()
