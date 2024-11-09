@@ -1,7 +1,6 @@
 from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
 from projective_utils import get_p1
 import string
-import timeit
 
 class SequenceBuilder:
   # q = size of the base field
@@ -68,10 +67,10 @@ class SequenceBuilder:
 if __name__ == "__main__":
   # size of the finite field. Remember the projective space has 
   # size q + 1
-  q = 3
+  q = 2
 
   # this is the degree of nilpotency for each element as well
-  n = q + 2
+  n = 5
 
   max_build_length = 40
 
