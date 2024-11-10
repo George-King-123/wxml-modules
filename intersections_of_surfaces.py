@@ -1,5 +1,5 @@
 from HyperSurfaceSet import HyperSurfaceSet
-from which_collections_are_good import generate_all_length_m_tuples
+from projective_utils import generate_all_length_m_tuples
 import itertools 
 
 def find_intersection_sizes(m, q, intersection_size):
