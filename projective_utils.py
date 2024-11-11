@@ -48,7 +48,7 @@ def generate_tuples(i, j, m):
       return 
 
     for a_i in range(i, j + 1):
-      cur.append(a_i)
+      cur.append(a_i) 
       generate_recur(cur)
       cur.pop()
   
@@ -56,31 +56,31 @@ def generate_tuples(i, j, m):
 
   return all_tuples 
 
-# generate all unique tuples of length m with entries in p1, 
+# generate all unique tuples of length m with entries in P^d, 
 # taking F_q to be the base field
-def generate_all_length_m_tuples(q, m):
+def generate_all_length_m_tuples(q, m, d=1):
   all_tuples = []
-  p1 = get_p1(q)
+  pd_Fq = get_pd_of_fq(d=d, q=q)
 
   def generate_recur(cur):
     if len(cur) == m:
       all_tuples.append(tuple(cur))
       return 
 
-    for p in p1:
+    for p in pd_Fq:
       cur.append(p)
       generate_recur(cur)
       cur.pop()
   
   generate_recur([])
 
-  assert len(all_tuples) == (q + 1) ** m
+  assert len(all_tuples) == len(pd_Fq) ** m
   return all_tuples 
 
 #  returns a readable view of the collection, associating each element of P1 with a letter
 # and printing the M-tuples as words in this alphabet
-def collection_to_string(c, q):
-  letter_map = {pt: letter for pt, letter in zip(get_p1(q), string.ascii_uppercase)}
+def collection_to_string(c, q, d=1):
+  letter_map = {pt: letter for pt, letter in zip(get_pd_of_fq(q=q, d=d), string.ascii_uppercase)}
 
   def translate_tuple(tuple):
     return "".join(letter_map[t] for t in tuple)

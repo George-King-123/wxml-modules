@@ -1,34 +1,35 @@
 from projective_utils import generate_tuples, get_all_hypersurfaces
 from functools import lru_cache
 
-# represents the set of all hypersurfaces of degree m in P1(q)
+# represents the set of all hypersurfaces of degree m in P^d(F_q)
 class HyperSurfaceSet:
 
-  def __init__(self, m, q, num_generators=2):
+  def __init__(self, m, q, d=1):
     self.m = m
     self.q = q
-    self.num_generators = num_generators
+    self.d = d
 
-    self.monomial_indices = generate_tuples(0, num_generators - 1, m) 
-    self.hyper_surfaces = get_all_hypersurfaces(q=q, m=m, d=num_generators-1)
+    self.monomial_indices = generate_tuples(0, d, m) 
+    self.hyper_surfaces = get_all_hypersurfaces(q=q, m=m, d=d)
 
     # pt_cache[i] is a list of length num_generators**m, 
     # where pt_cache[i][j] is the value of the jth monomial when you plug in point i
     self.pt_cache = {}
 
 
-  # each point in pts is a point in (P^1)^m
+  # each point in pts is a point in (P^d)^m
+  # where d = num_generators - 1
   def is_good_collection(self, pts):
     return all(any((self.point_on_surface(pt=pt, surface=s) for pt in pts))
                 for s in self.hyper_surfaces)
 
   # is the given point in (P^1)^m on the hypersurface of degree m
-  # pt is a matrix where pt[i] = (\beta^i_1, \beta^i_2)
+  # pt is a matrix where pt[i] = (\beta^i_1, \beta^i_2, ..., beta_i^{num_generators})
   def point_on_surface(self, pt, surface):
     if pt not in self.pt_cache:
       self.cache_pt(pt)
 
-    length = 2 ** self.m
+    length = (self.d + 1) ** self.m
     assert len(self.pt_cache[pt]) == length 
     assert len(surface) == length 
 

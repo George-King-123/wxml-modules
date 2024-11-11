@@ -1,16 +1,16 @@
 from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
-from projective_utils import get_p1
+from projective_utils import get_pd_of_fq
 import string
-import timeit 
 
 class SequenceBuilder:
   # q = size of the base field
   # n = the nilpotentcy degree for all elements, also the number of tuples per window
-  def __init__(self, q, n, max_build_length):
+  def __init__(self, q, n, max_build_length, d=1):
     self.q = q
     self.n = n
     self.max_build_length = max_build_length
-    self.p1 = get_p1(q)
+    self.d = d
+    self.pd = get_pd_of_fq(d=d, q=q)
 
     # successful_sequences[i] = a set of sequences of length i that meet the constraints 
     self.successful_sequences = [set() for _ in range(max_build_length + 1)]
@@ -52,14 +52,13 @@ class SequenceBuilder:
     if len(cur_sequence) == self.max_build_length:
       return
 
-    # try adding everything from 1 up to q+1 (inclusive) to the sequence
-    for next_elt in self.p1:
+    for next_elt in self.pd:
       cur_sequence.append(next_elt)
       self.build_sequence_recur(cur_sequence)
       cur_sequence.pop()
 
   def print_seq(self, seq):
-    letter_map = {pt:letter for pt, letter in zip(self.p1, string.ascii_uppercase)}
+    letter_map = {pt:letter for pt, letter in zip(self.pd, string.ascii_uppercase)}
 
     letter_seq = "".join(letter_map[pt] for pt in seq) + "\\"
 
@@ -69,8 +68,8 @@ class SequenceBuilder:
 # to the number of successful sequences. Deletes all mappings of 0 after 
 # the first one. If there are no lengths which map to 0 in the range [0, max_build_length]
 # then it will return a map with size max_build_length, where all values are positive
-def get_length_histogram(q, n, max_build_length=40):
-  sb = SequenceBuilder(q=q, n=n, max_build_length=max_build_length)
+def get_length_histogram(q, n, max_build_length=40, d=1):
+  sb = SequenceBuilder(q=q, n=n, max_build_length=max_build_length, d=d)
   sb.build_sequences()
   length_to_num = {}
   for length in range(len(sb.successful_sequences)):
@@ -87,6 +86,6 @@ def print_seq_length_histogram(hist):
 
 
 if __name__ == "__main__":
-  hist = get_length_histogram(q=2, n=5, max_build_length=40)
+  hist = get_length_histogram(q=2, n=1, max_build_length=10, d=1)
   print_seq_length_histogram(hist)
   
