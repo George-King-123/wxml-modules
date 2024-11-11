@@ -24,8 +24,5 @@ class TestInvestigateCollections(unittest.TestCase):
         self.assertEqual(investigate_collections(q=3, m=2, size=5), 96)
         self.assertEqual(investigate_collections(q=3, m=2, size=6), 528)
 
-
-
-
 if __name__ == "__main__":
     unittest.main()

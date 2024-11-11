@@ -1,17 +1,18 @@
-from projective_utils import generate_tuples
+from projective_utils import generate_tuples, get_all_hypersurfaces
 from functools import lru_cache
 
 # represents the set of all hypersurfaces of degree m in P1(q)
 class HyperSurfaceSet:
 
-  def __init__(self, m, q):
+  def __init__(self, m, q, num_generators=2):
     self.m = m
     self.q = q
+    self.num_generators = num_generators
 
-    self.monomial_indices = generate_tuples(0, 1, m) 
-    self.hyper_surfaces = HyperSurfaceSet.get_all_hypersurfaces(q=q, m=m)
+    self.monomial_indices = generate_tuples(0, num_generators - 1, m) 
+    self.hyper_surfaces = get_all_hypersurfaces(q=q, m=m, d=num_generators-1)
 
-    # pt_cache[i] is a list of length 2**m, 
+    # pt_cache[i] is a list of length num_generators**m, 
     # where pt_cache[i][j] is the value of the jth monomial when you plug in point i
     self.pt_cache = {}
 
@@ -48,32 +49,7 @@ class HyperSurfaceSet:
       for j in range(self.m):
         prod *= pt[j][t[j]]
         prod %= self.q 
-      self.pt_cache[pt].append(prod)
-
-
-  # we will actually generate all tuples of length 2^m 
-  # with entries in F_q
-  @staticmethod
-  def get_all_hypersurfaces(m, q):
-    all_reps = generate_tuples(0, q-1, 2 ** m)
-
-    rep_already_in = set()
-    all_hypersurfaces = set()
-
-    for r in all_reps:
-      if r not in rep_already_in:
-        # no representative of r is in our set yet 
-        all_hypersurfaces.add(r)
-        for i in range(q):
-          rep_already_in.add(HyperSurfaceSet.mul_tuple(i, r, q))
-    
-    assert len(all_hypersurfaces) == int((q**(2**m) - 1)/(q-1))
-
-    return all_hypersurfaces 
-  
-  @staticmethod 
-  def mul_tuple(scalar, t, q):
-    return tuple([(scalar * ti) % q for ti in t])
+      self.pt_cache[pt].append(prod) 
   
 class CachedHyperSurfaceSet(HyperSurfaceSet):
   def is_good_collection(self, pts):

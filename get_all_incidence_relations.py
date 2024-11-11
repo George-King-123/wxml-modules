@@ -11,6 +11,15 @@ def get_all_incidence_relations(q, m):
     return {s:[pt for pt in all_tuples if surface_set.point_on_surface(pt=pt, surface=s)]
                  for s in surface_set.hyper_surfaces}
 
+# mostly for testing
+def get_incidence_histogram(incidence_map):
+    freq_map = {} 
+    for s in incidence_map:
+        num_pts_on_s = len(incidence_map[s])
+        freq_map[num_pts_on_s] = freq_map.get(num_pts_on_s, 0) + 1
+    print(freq_map)
+    return freq_map
+
 
 def print_all_incidence_relations(incidence_map, q):
     # label the surfaces with numbers, the equations don't mean much
@@ -23,17 +32,14 @@ def print_all_incidence_relations(incidence_map, q):
 
 
 def print_incidence_hisogram(incidence_map):
-    freq_map = {} 
-    for s in incidence_map:
-        num_pts_on_s = len(incidence_map[s])
-        freq_map[num_pts_on_s] = freq_map.get(num_pts_on_s, 0) + 1
+    freq_map = get_incidence_histogram(incidence_map)
     
     sorted_freqs = sorted([(size, freq_map[size]) for size in freq_map], key = lambda x: x[0])
     for size, freq_of_size in sorted_freqs:
         print(f"Number of surfaces with {size} points on them: {freq_of_size} \\")
 
 if __name__ == "__main__":
-    q = 2
+    q = 3
     m = 3
 
     relations = get_all_incidence_relations(q=q, m=m)

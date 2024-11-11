@@ -1,7 +1,40 @@
 import string 
 
 def get_p1(q):
-  return [(0, 1)] + [(1, d) for d in range(0, q)]
+  p1 = get_pd_of_fq(d=1, q=q)
+  assert len(p1) == q + 1
+  return p1
+
+# returns all hypersurfaces of degree m in P^d(F_q)
+def get_all_hypersurfaces(m, q, d=1):
+  all_hypersurfaces = get_pd_of_fq(d=int((d+1)**m - 1), q=q)
+
+  assert len(all_hypersurfaces) == int((q**((d+1)**m) - 1)/(q-1))
+
+  return all_hypersurfaces 
+
+# returns the projective space of dimension d associated with F_q, 
+# i.e. the lines in F_q^{d+1}. This is represented by returning d + 1
+# tuples that are exactly the representatives of the appropriate equivalence classes
+def get_pd_of_fq(d, q):
+  all_reps = generate_tuples(0, q-1, d + 1)
+
+  rep_already_in = set()
+  p_d_q = set()
+
+  for r in all_reps:
+    if r not in rep_already_in:
+      # no representative of r is in our set yet 
+      p_d_q.add(r)
+      for i in range(q):
+        rep_already_in.add(mul_tuple(i, r, q))
+  
+  assert len(p_d_q) == int((q**(d + 1) - 1)/(q-1))
+
+  return p_d_q 
+
+def mul_tuple(scalar, t, q):
+  return tuple([(scalar * ti) % q for ti in t])
 
 # return a list of tuples (a_1, ... a_m) st
 # a_i \in \{i, i + 1, ..., j - 1, j\}

@@ -1,6 +1,7 @@
 from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
 from projective_utils import get_p1
 import string
+import timeit 
 
 class SequenceBuilder:
   # q = size of the base field
@@ -30,7 +31,7 @@ class SequenceBuilder:
       length_m_tuples.add(tuple(seq[-m:]))
 
       if m not in self.surface_sets:
-        self.surface_sets[m] = CachedHyperSurfaceSet(m=m, q=q)
+        self.surface_sets[m] = CachedHyperSurfaceSet(m=m, q=self.q)
 
       if not self.surface_sets[m].is_good_collection(length_m_tuples):
         return False
@@ -63,23 +64,29 @@ class SequenceBuilder:
     letter_seq = "".join(letter_map[pt] for pt in seq) + "\\"
 
     print(letter_seq)
+  
+# returns a map {len: num} which maps a sequence length 
+# to the number of successful sequences. Deletes all mappings of 0 after 
+# the first one. If there are no lengths which map to 0 in the range [0, max_build_length]
+# then it will return a map with size max_build_length, where all values are positive
+def get_length_histogram(q, n, max_build_length=40):
+  sb = SequenceBuilder(q=q, n=n, max_build_length=max_build_length)
+  sb.build_sequences()
+  length_to_num = {}
+  for length in range(len(sb.successful_sequences)):
+    num_successful = len(sb.successful_sequences[length])
+    length_to_num[length] = num_successful
+    if num_successful == 0: 
+      break
+  return length_to_num
+
+def print_seq_length_histogram(hist):
+  sorted_hist = sorted([(length, hist[length]) for length in hist], key = lambda x: x[0])
+  for len, num_good in sorted_hist:
+    print(f"# of good length {len} sequences: {num_good}")
+
 
 if __name__ == "__main__":
-  # size of the finite field. Remember the projective space has 
-  # size q + 1
-  q = 2
-
-  # this is the degree of nilpotency for each element as well
-  n = 5
-
-  max_build_length = 40
-
-  sb = SequenceBuilder(q=q, n=n, max_build_length=max_build_length)
-
-  def print_lengths():
-    for l in range(len(sb.successful_sequences)):
-      num_successful = len(sb.successful_sequences[l])
-      print(f"There are {num_successful} successful seqs of length {l}\\")
+  hist = get_length_histogram(q=2, n=5, max_build_length=40)
+  print_seq_length_histogram(hist)
   
-  sb.build_sequences()
-  print_lengths()
