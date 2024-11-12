@@ -20,7 +20,8 @@ class HyperSurfaceSet:
   # each point in pts is a point in (P^d)^m
   # where d = num_generators - 1
   def is_good_collection(self, pts):
-    return all(any((self.point_on_surface(pt=pt, surface=s) for pt in pts))
+    return all(any((self.point_on_surface(pt=pt, surface=s) 
+                    for pt in pts))
                 for s in self.hyper_surfaces)
 
   # is the given point in (P^1)^m on the hypersurface of degree m
