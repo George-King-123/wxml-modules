@@ -5,12 +5,13 @@ import string
 class SequenceBuilder:
   # q = size of the base field
   # n = the nilpotentcy degree for all elements, also the number of tuples per window
-  def __init__(self, q, n, max_build_length, d=1):
+  def __init__(self, q, n, max_build_length, d=1, max_m = None):
     self.q = q
     self.n = n
     self.max_build_length = max_build_length
     self.d = d
     self.pd = get_pd_of_fq(d=d, q=q)
+    self.max_m = max_m
 
     # successful_sequences[i] = a set of sequences of length i that meet the constraints 
     self.successful_sequences = [set() for _ in range(max_build_length + 1)]
@@ -21,7 +22,7 @@ class SequenceBuilder:
   def satisfies_contraints(self, seq):
     # degree we are considering,aka size of the tuple 
     m = 1
-    while m * self.n <= len(seq):
+    while m * self.n <= len(seq) and (self.max_m is None or m <= self.max_m):
       # check that the window ending here works for degree m
 
       # creates all tuples except for the last one, python quirk
@@ -84,8 +85,5 @@ def print_seq_length_histogram(hist):
   for len, num_good in sorted_hist:
     print(f"# of good length {len} sequences: {num_good}")
 
-
 if __name__ == "__main__":
-  hist = get_length_histogram(q=2, n=1, max_build_length=10, d=1)
-  print_seq_length_histogram(hist)
-  
+  pass

@@ -86,3 +86,35 @@ def collection_to_string(c, q, d=1):
     return "".join(letter_map[t] for t in tuple)
 
   return '{' + ", ".join((translate_tuple(m_tuple) for m_tuple in c)) + '}'
+
+# just checks if the set has m-tuples which all agree except for on one coordinate, 
+# and that that coordinate runs over all elements of P_d(F_q)
+def is_good_set_all_coords_fixed(mtuples: list, d, q):
+  m = len(mtuples[0]) 
+  dif_indices = [i for i in range(m) if mtuples[0] != mtuples[1]]
+  if len(dif_indices) != 1:
+    return False
+
+  dif_idx = dif_indices[0]
+
+  elts_at_dif_idx = set()
+  for i in range(2, len(mtuples)): 
+    dif_list = [i for i in range(m) if mtuples[0] != mtuples[i]]
+    if dif_list != [dif_idx]:
+      return False 
+    
+    elts_at_dif_idx.add(mtuples[i][dif_idx]) 
+  
+  return elts_at_dif_idx == set(get_pd_of_fq(d, q))
+
+def sequence_to_string(d, q, seq):
+  pd_fq = get_pd_of_fq(d, q)
+  letter_map = {pt: letter for pt, letter in zip(pd_fq, string.ascii_uppercase)}
+  
+  translated_seq = "".join([letter_map[pt] for pt in seq])
+  return translated_seq
+
+def number_to_seq(d, q, letters):
+  pd_fq = get_pd_of_fq(d, q)
+  letter_to_pt = {letter: pt for letter, pt in zip([0, 1, 2], pd_fq)}
+  return [letter_to_pt[letter] for letter in letters] 

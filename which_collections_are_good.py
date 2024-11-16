@@ -1,5 +1,5 @@
 from HyperSurfaceSet import HyperSurfaceSet
-from projective_utils import get_p1, generate_all_length_m_tuples
+from projective_utils import get_p1, generate_all_length_m_tuples, collection_to_string
 from math import comb
 import itertools
 import string
@@ -12,6 +12,7 @@ def investigate_collections(q, m, size):
   num_good = 0
   for c in all_collections:    
     if checker.is_good_collection(c):
+      print(collection_to_string(c, q))
       num_good += 1
     
   return num_good
@@ -54,5 +55,5 @@ if __name__ == "__main__":
     print('\\end{array}\n$$')
 
 
-  make_latex_table(q=2, m_min=1, m_max=3, size_min=6, size_max=6)
-
+  # make_latex_table(q=3, m_min=1, m_max=2, size_min=5, size_max=5)
+  print(investigate_collections(q=2, m=4, size=4))

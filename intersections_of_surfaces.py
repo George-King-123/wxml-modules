@@ -18,4 +18,4 @@ def find_intersection_sizes(m, q, intersection_size):
   print(sorted([(num, freq_count[num]) for num in freq_count], key = lambda x:x[0]))
 
 if __name__ == "__main__":
-  find_intersection_sizes(3, 2, 2)
+  find_intersection_sizes(m=2, q=5, intersection_size=3)
