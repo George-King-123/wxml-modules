@@ -1,4 +1,5 @@
 import string 
+from functools import lru_cache
 
 def get_p1(q):
   p1 = get_pd_of_fq(d=1, q=q)
@@ -87,6 +88,50 @@ def collection_to_string(c, q, d=1):
 
   return '{' + ", ".join((translate_tuple(m_tuple) for m_tuple in c)) + '}'
 
+
+# returns true iff a set of mtuples is simple.
+# Recall we say a set is simple if it contains a subset C st 
+# there is an index i st all elements of C agree on indices other than i,
+# and the points at index i run over all of P^d.
+# fact: all simple sets are good
+def is_set_simple(mtuples, d, q):
+  m = len(next(iter(mtuples))) 
+
+  # If the input is {"aaa", "aba", "def"}
+  # one_star_to_completion_map will be
+  # {('*', 'a', 'a'): {'aaa'}, 
+  # ('a', '*', 'a'): {'aaa', 'aca'}, 
+  # ('a', 'a', '*'): {'aaa'}, 
+  # ('*', 'e', 'f'): {'def'}, 
+  # ('d', '*', 'f'): {'def'}, 
+  # ('d', 'e', '*'): {'def'}, 
+  # ('*', 'c', 'a'): {'aca'}, 
+  # ('a', 'c', '*'): {'aca'}}
+
+  one_star_to_completion_map = {}
+  pd_fq_size = len(get_pd_of_fq(d, q)) 
+
+  for t in mtuples:
+    for i in range(m):
+      differ_at_i = t[0:i] + ("*",) + t[i+1:]
+      if differ_at_i not in one_star_to_completion_map:
+        one_star_to_completion_map[differ_at_i] = set() 
+      one_star_to_completion_map[differ_at_i].add(t)
+
+      if len(one_star_to_completion_map[differ_at_i]) == pd_fq_size:
+        return True 
+
+  return False
+
+# when running sequence builder, this gives a MASSIVE improvement,
+# and is better than any naive caching implemented by hand
+# have to call it passing in mtuple as a big tuple of all the tuples,
+# since sets aren't hashable
+@lru_cache(maxsize=None)
+def is_set_simple_cached(mtuples, d, q):
+  return is_set_simple(mtuples, d, q)
+
+# WARNING: THIS FUNCTION IS DEPRECATED, is_set_simple is strictly better
 # just checks if the set has m-tuples which all agree except for on one coordinate, 
 # and that that coordinate runs over all elements of P_d(F_q)
 def is_good_set_all_coords_fixed(mtuples, d, q):
@@ -134,3 +179,4 @@ def number_to_seq(d, q, letters):
   pd_fq = get_pd_of_fq(d, q)
   letter_to_pt = {letter: pt for letter, pt in zip([0, 1, 2], pd_fq)}
   return [letter_to_pt[letter] for letter in letters] 
+

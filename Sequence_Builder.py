@@ -1,6 +1,7 @@
 from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
-from projective_utils import get_pd_of_fq, is_good_set_all_coords_fixed, collection_to_string, sequence_to_string
+from projective_utils import get_pd_of_fq, is_good_set_all_coords_fixed, collection_to_string, sequence_to_string, is_set_simple, is_set_simple_cached
 import string
+import timeit
 
 class SequenceBuilder:
   # q = size of the base field
@@ -86,7 +87,8 @@ def print_seq_length_histogram(hist):
     print(f"# of good length {len} sequences: {num_good}")
 
 
-class SequenceBuilderOnlyFixedCoords(SequenceBuilder): 
+class SimpleSetSequenceBuilder(SequenceBuilder): 
+
   def satisfies_contraints(self, seq):
     # degree we are considering,aka size of the tuple 
     m = 1
@@ -99,9 +101,9 @@ class SequenceBuilderOnlyFixedCoords(SequenceBuilder):
       # add the last one 
       length_m_tuples.add(tuple(seq[-m:]))
 
-      if not is_good_set_all_coords_fixed(mtuples=length_m_tuples, d=self.d, q=self.q):
+      if not is_set_simple_cached(mtuples=tuple(length_m_tuples), d=self.d, q=self.q):
         return False
-      
+    
       m += 1
 
     return True
@@ -109,8 +111,11 @@ class SequenceBuilderOnlyFixedCoords(SequenceBuilder):
 
 
 if __name__ == "__main__":
-  sb = SequenceBuilderOnlyFixedCoords(q=2, n=5, max_build_length=20, d=1)
+  start = timeit.default_timer()
+  sb = SequenceBuilder(q=2, n=6, max_build_length=27, d=1)
   sb.build_sequences() 
+  end = timeit.default_timer()
+  print(end - start)
 
   length_to_num = {}
   for length in range(len(sb.successful_sequences)):
@@ -120,7 +125,4 @@ if __name__ == "__main__":
       break
   print(length_to_num)
 
-  # print(sequence_to_string(seq=next(iter(sb.successful_sequences[11])), q=2, d=1))
-
-  # print(is_good_set_all_coords_fixed(mtuples={'AA', 'CB', 'AB' 'CC'}, d=1, q=2))
 
