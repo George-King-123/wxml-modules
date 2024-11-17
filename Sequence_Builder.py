@@ -108,14 +108,14 @@ class SimpleSetSequenceBuilder(SequenceBuilder):
 
     return True
 
-
-
 if __name__ == "__main__":
   start = timeit.default_timer()
+
   sb = SequenceBuilder(q=2, n=6, max_build_length=27, d=1)
   sb.build_sequences() 
+  
   end = timeit.default_timer()
-  print(end - start)
+  print(f"Time taken, in seconds: {end - start}")
 
   length_to_num = {}
   for length in range(len(sb.successful_sequences)):
