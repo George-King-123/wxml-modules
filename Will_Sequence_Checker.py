@@ -39,13 +39,21 @@ def check_will_sequence_with_restricted_good_sets(seq, d, q, k):
 
     return True
 
-def build_and_check_will_sequence(k, num_generators, q, length): 
+def will_sequence_works(k, num_generators, q, length): 
     will_seq = build_will_sequence(k, num_generators, q, length)
-    print(sequence_to_string(d=num_generators-1, q=q, seq=will_seq))
-    is_good = check_will_sequence_with_restricted_good_sets(seq=will_seq, d=num_generators-1, q=q, k=k) 
-    print(is_good)
+
+    # print(sequence_to_string(d=num_generators-1, q=q, seq=will_seq))
+    return check_will_sequence_with_restricted_good_sets(seq=will_seq, d=num_generators-1, q=q, k=k) 
+    
+def check_many_values(k_min, k_max, gen_min, gen_max, q_set, length): 
+    return all(
+        will_sequence_works(k=k, num_generators=g, q=q, length=length)
+        for k in range(k_min, k_max + 1) 
+        for g in range(gen_min, gen_max + 1)
+        for q in q_set
+    )
 
 if __name__ == "__main__":
-    build_and_check_will_sequence(k=2, num_generators=2, q=2, length=300)
+    # print(check_many_values(k_min=2, k_max=7, gen_min=2, gen_max=5, q_set={2, 3, 5}, length=1000))
         
 
