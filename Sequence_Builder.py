@@ -87,7 +87,7 @@ def print_seq_length_histogram(hist):
     print(f"# of good length {len} sequences: {num_good}")
 
 
-class SimpleSetSequenceBuilder(SequenceBuilder): 
+class SimpleSequenceBuilder(SequenceBuilder): 
 
   def satisfies_contraints(self, seq):
     # degree we are considering,aka size of the tuple 
@@ -108,21 +108,46 @@ class SimpleSetSequenceBuilder(SequenceBuilder):
 
     return True
 
-if __name__ == "__main__":
+def compare_simple_and_non_simple_sequences(q, n, max_length, d):
+  print("Comparing simple and non simple sequences for " + 
+        f"$q = {q}$, $n = {n}$, number of generators $= {d + 1}$  ")
+
+  # simple 
   start = timeit.default_timer()
-
-  sb = SequenceBuilder(q=2, n=6, max_build_length=27, d=1)
-  sb.build_sequences() 
-  
+  sb_simple = SimpleSequenceBuilder(q=q, n=n, max_build_length=max_length, d=d)
+  sb_simple.build_sequences() 
   end = timeit.default_timer()
-  print(f"Time taken, in seconds: {end - start}")
+  print(f"Time taken, in seconds, for simple: ${round(end - start, 2)}$ ")
+  
+  # non simple
+  start = timeit.default_timer()
+  sb_non_simple = SequenceBuilder(q=q, n=n, max_build_length=max_length, d=d)
+  sb_non_simple.build_sequences() 
+  end = timeit.default_timer()
+  print(f"Time taken, in seconds, for non-simple: ${round(end - start, 2)}$  ")
 
-  length_to_num = {}
-  for length in range(len(sb.successful_sequences)):
-    num_successful = len(sb.successful_sequences[length])
-    length_to_num[length] = num_successful
-    if num_successful == 0: 
-      break
-  print(length_to_num)
 
+  def make_latex_table():
+    header = ("\\text{Length} & \\text{\\# of good sequences}"
+              + "& \\text{\\# of good simple sequences} \\\\ \n")
+    
+    body = []
+    for length in range(len(sb_non_simple.successful_sequences)):
+      num_successful = len(sb_non_simple.successful_sequences[length])
+      num_successful_simple = len(sb_simple.successful_sequences[length])
+      body.append(f"{length} & {num_successful} & {num_successful_simple}")
+      if num_successful == 0: 
+        break
+    
+    table_start = "\\begin{array}{c|c|c}\n"
+    table_end = "\n\\end{array}"
+    overall = table_start + header + "\hline\n" + " \\\\ \n".join(body) + table_end
 
+    return overall
+
+  print("$$")
+  print(make_latex_table())
+  print("$$")
+
+if __name__ == "__main__":
+  compare_simple_and_non_simple_sequences(2, 6, 30, 1)
