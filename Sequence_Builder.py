@@ -1,5 +1,5 @@
 from HyperSurfaceSet import HyperSurfaceSet, CachedHyperSurfaceSet
-from projective_utils import get_pd_of_fq
+from projective_utils import get_pd_of_fq, is_good_set_all_coords_fixed, collection_to_string, sequence_to_string
 import string
 
 class SequenceBuilder:
@@ -85,5 +85,42 @@ def print_seq_length_histogram(hist):
   for len, num_good in sorted_hist:
     print(f"# of good length {len} sequences: {num_good}")
 
+
+class SequenceBuilderOnlyFixedCoords(SequenceBuilder): 
+  def satisfies_contraints(self, seq):
+    # degree we are considering,aka size of the tuple 
+    m = 1
+    while m * self.n <= len(seq) and (self.max_m is None or m <= self.max_m):
+      # check that the window ending here works for degree m
+
+      # creates all tuples except for the last one, python quirk
+      length_m_tuples = {tuple(seq[-m*(j+1) : -m*j]) for j in range (1, self.n)}
+
+      # add the last one 
+      length_m_tuples.add(tuple(seq[-m:]))
+
+      if not is_good_set_all_coords_fixed(mtuples=length_m_tuples, d=self.d, q=self.q):
+        return False
+      
+      m += 1
+
+    return True
+
+
+
 if __name__ == "__main__":
-  pass
+  sb = SequenceBuilderOnlyFixedCoords(q=2, n=5, max_build_length=20, d=1)
+  sb.build_sequences() 
+
+  length_to_num = {}
+  for length in range(len(sb.successful_sequences)):
+    num_successful = len(sb.successful_sequences[length])
+    length_to_num[length] = num_successful
+    if num_successful == 0: 
+      break
+  print(length_to_num)
+
+  # print(sequence_to_string(seq=next(iter(sb.successful_sequences[11])), q=2, d=1))
+
+  # print(is_good_set_all_coords_fixed(mtuples={'AA', 'CB', 'AB' 'CC'}, d=1, q=2))
+

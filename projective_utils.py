@@ -89,8 +89,8 @@ def collection_to_string(c, q, d=1):
 
 # just checks if the set has m-tuples which all agree except for on one coordinate, 
 # and that that coordinate runs over all elements of P_d(F_q)
-def is_good_set_all_coords_fixed(mtuples: list, d, q):
-  m = len(mtuples[0]) 
+def is_good_set_all_coords_fixed(mtuples, d, q):
+  m = len(next(iter(mtuples))) 
 
   if m == 1: 
     # just needs to contain all elements of P1
@@ -117,6 +117,8 @@ def is_good_set_all_coords_fixed(mtuples: list, d, q):
   pts_at_dif_idx = set()
 
   for elt in dif_elts: 
+    if len([i for i in range(m) if elt1[i] != elt[i]]) > 1:
+      return False
     pts_at_dif_idx.add(elt[dif_idx])
     
   return pts_at_dif_idx == set(get_pd_of_fq(d, q))

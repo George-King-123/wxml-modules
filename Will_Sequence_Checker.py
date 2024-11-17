@@ -31,11 +31,9 @@ def check_will_sequence_with_restricted_good_sets(seq, d, q, k):
             # creates all tuples except for the last one, python quirk
             length_m_tuples = [tuple(seq[endpoint-m*(j+1) : endpoint-m*j]) for j in range (0, n)]
             if not is_good_set_all_coords_fixed(length_m_tuples, d=d, q=q):
-                print(collection_to_string(c=length_m_tuples, q=q, d=d))
                 return False
             
             m *= k
-
 
     return True
 
@@ -54,6 +52,8 @@ def check_many_values(k_min, k_max, gen_min, gen_max, q_set, length):
     )
 
 if __name__ == "__main__":
+    pass
+    # print(will_sequence_works(k=2, num_generators=2, q=2, length=64))
     # print(check_many_values(k_min=2, k_max=7, gen_min=2, gen_max=5, q_set={2, 3, 5}, length=1000))
         
 
