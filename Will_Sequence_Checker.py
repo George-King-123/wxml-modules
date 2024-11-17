@@ -6,7 +6,6 @@ def build_will_sequence(k, num_generators, q, length):
     d = num_generators - 1
     pd_fq = list(get_pd_of_fq(d=d, q=q))
     w = len(pd_fq)
-    print(w)
 
     # seq_indices will be the indices of the elements in pd_fq
     seq_indices = []
@@ -36,7 +35,8 @@ def check_will_sequence_with_restricted_good_sets(seq, d, q, k):
                 return False
             
             m *= k
-    
+
+
     return True
 
 def build_and_check_will_sequence(k, num_generators, q, length): 
@@ -46,6 +46,6 @@ def build_and_check_will_sequence(k, num_generators, q, length):
     print(is_good)
 
 if __name__ == "__main__":
-    build_and_check_will_sequence(k=2, num_generators=2, q=2, length=10000)
+    build_and_check_will_sequence(k=2, num_generators=2, q=2, length=300)
         
 
