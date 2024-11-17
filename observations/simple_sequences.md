@@ -1,3 +1,5 @@
+Note: github doesn't let you preview markdown files correctly, download and view in some editor, e.g. VSC.
+
 Call a set of $S$ of $m$-tuples of elements of $\mathbb{P}^d(F_q)$ "simple" if it contains a subset $C \subseteq S$ with $|C| = |\mathbb{P}^d(F_q)|$ such that all elements of $C$ have $m-1$ indices in common (and then necessarily they differ at the other index, and points occupying that index in $C$ run over all elements of $\mathbb{P}^d(F_q)$). 
 
 Call a (potentially truncated) multilinearly uniformly recurrent sequence of points in $\mathbb{P}^d(F_q)$ simple if it satisfies the contraints of an MUR sequence only with simple sets.
