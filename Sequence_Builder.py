@@ -149,5 +149,44 @@ def compare_simple_and_non_simple_sequences(q, n, max_length, d):
   print(make_latex_table())
   print("$$")
 
+
+def make_simple_sequence_table(q, n, max_length, d):
+  print("Generating simple sequences for " + 
+        f"$q = {q}$, $n = {n}$, number of generators $= {d + 1}$  ")
+
+  # simple 
+  start = timeit.default_timer()
+  sb_simple = SimpleSequenceBuilder(q=q, n=n, max_build_length=max_length, d=d)
+  sb_simple.build_sequences() 
+  end = timeit.default_timer()
+  print(f"Time taken, in seconds: ${round(end - start, 2)}$ ")
+  
+  def make_latex_table():
+    header = ("\\text{Length} & \\text{\\# of good simple sequences} \\\\ \n")
+    
+    body = []
+    for length in range(len(sb_simple.successful_sequences)):
+      num_successful = len(sb_simple.successful_sequences[length])
+      body.append(f"{length} & {num_successful} ")
+      if num_successful == 0: 
+        break
+    
+    table_start = "\\begin{array}{c|c}\n"
+    table_end = "\n\\end{array}"
+    overall = table_start + header + "\hline\n" + " \\\\ \n".join(body) + table_end
+
+    return overall
+
+  print("$$")
+  print(make_latex_table())
+  print("$$")
+
+
 if __name__ == "__main__":
-  compare_simple_and_non_simple_sequences(2, 6, 30, 1)
+  # will never return
+  # make_simple_sequence_table(2, 7, 50, 1)
+
+  # will finish relatively quickly
+  # make_simple_sequence_table(2, 6, 50, 1)
+
+  pass
