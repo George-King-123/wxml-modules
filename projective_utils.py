@@ -91,21 +91,35 @@ def collection_to_string(c, q, d=1):
 # and that that coordinate runs over all elements of P_d(F_q)
 def is_good_set_all_coords_fixed(mtuples: list, d, q):
   m = len(mtuples[0]) 
-  dif_indices = [i for i in range(m) if mtuples[0] != mtuples[1]]
+
+  if m == 1: 
+    # just needs to contain all elements of P1
+    return {t[0] for t in mtuples} == set(get_pd_of_fq(d, q))
+
+
+  # to find the index of interest, need to take any two distinct elements 
+  # and find the index at which they differ
+  dif_elts = set(mtuples) 
+  elt1 = dif_elts.pop()
+  elt2 = dif_elts.pop()
+
+  dif_indices = [i for i in range(m) if elt1[i] != elt2[i]]
   if len(dif_indices) != 1:
     return False
 
   dif_idx = dif_indices[0]
 
-  elts_at_dif_idx = set()
-  for i in range(2, len(mtuples)): 
-    dif_list = [i for i in range(m) if mtuples[0] != mtuples[i]]
-    if dif_list != [dif_idx]:
-      return False 
+  # add the arbitrary elements back in before going over all m-tuples 
+  # to ensure all points in p1 appear at dif_idx
+  dif_elts.add(elt1)
+  dif_elts.add(elt2) 
+
+  pts_at_dif_idx = set()
+
+  for elt in dif_elts: 
+    pts_at_dif_idx.add(elt[dif_idx])
     
-    elts_at_dif_idx.add(mtuples[i][dif_idx]) 
-  
-  return elts_at_dif_idx == set(get_pd_of_fq(d, q))
+  return pts_at_dif_idx == set(get_pd_of_fq(d, q))
 
 def sequence_to_string(d, q, seq):
   pd_fq = get_pd_of_fq(d, q)

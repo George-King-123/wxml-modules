@@ -1,6 +1,6 @@
 # note: this file is a work in progress, the indexing could be much cleaner
 
-from projective_utils import get_pd_of_fq, is_good_set_all_coords_fixed, sequence_to_string
+from projective_utils import get_pd_of_fq, is_good_set_all_coords_fixed, sequence_to_string, collection_to_string
 
 def build_will_sequence(k, num_generators, q, length):
     d = num_generators - 1
@@ -14,9 +14,9 @@ def build_will_sequence(k, num_generators, q, length):
     for i in range(1, length + 1):
         if i % k == 0:
             # python lists are 0-indexed, the sequence is 1-indexed
-            seq_indices.append((seq_indices[i//k - 1] + 1) % w)
+            seq_indices.append((seq_indices[i//k -1] + 1) % w)
         else:
-            seq_indices.append(i % k) 
+            seq_indices.append((i % k) % w) 
     
     seq = [pd_fq[i] for i in seq_indices]
     return seq
@@ -31,8 +31,8 @@ def check_will_sequence_with_restricted_good_sets(seq, d, q, k):
         while m * n <= endpoint:
             # creates all tuples except for the last one, python quirk
             length_m_tuples = [tuple(seq[endpoint-m*(j+1) : endpoint-m*j]) for j in range (0, n)]
-
             if not is_good_set_all_coords_fixed(length_m_tuples, d=d, q=q):
+                print(collection_to_string(c=length_m_tuples, q=q, d=d))
                 return False
             
             m *= k
@@ -46,6 +46,6 @@ def build_and_check_will_sequence(k, num_generators, q, length):
     print(is_good)
 
 if __name__ == "__main__":
-    build_and_check_will_sequence(2, 2, 2, 25)
+    build_and_check_will_sequence(k=2, num_generators=2, q=2, length=10000)
         
 
