@@ -187,6 +187,6 @@ if __name__ == "__main__":
   # make_simple_sequence_table(2, 7, 50, 1)
 
   # will finish relatively quickly
-  # make_simple_sequence_table(2, 6, 50, 1)
+  compare_simple_and_non_simple_sequences(q=2, n=3, max_length=50, d=1)
 
   pass
